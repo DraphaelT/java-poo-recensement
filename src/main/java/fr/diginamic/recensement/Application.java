@@ -2,6 +2,10 @@ package fr.diginamic.recensement;
 
 import java.util.Scanner;
 
+import exception.BorneServiceException;
+import exception.DepartementServiceException;
+import exception.RegionServiceException;
+import exception.VilleServiceException;
 import fr.diginamic.recensement.entites.Recensement;
 import fr.diginamic.recensement.services.RechercheDepartementsPlusPeuplees;
 import fr.diginamic.recensement.services.RecherchePopulationBorneService;
@@ -25,8 +29,9 @@ public class Application {
 	 * Point d'entrée
 	 * 
 	 * @param args arguments (non utilisés ici)
+	 * @throws Exception 
 	 */
-	public static void main(String[] args) {
+	public static void main(String[] args) throws Exception {
 		Scanner scanner = new Scanner(System.in);
 
 		String filePath = ClassLoader.getSystemClassLoader().getResource("recensement.csv").getFile();
@@ -53,20 +58,36 @@ public class Application {
 			// On exécute l'option correspondant au choix de l'utilisateur
 			switch (choix) {
 			case 1:
+				try {
 				RecherchePopulationVilleService rechercheVille = new RecherchePopulationVilleService();
 				rechercheVille.traiter(recensement, scanner);
+				}catch(VilleServiceException e) {
+					System.err.println(e.getMessage());
+				}
 				break;
 			case 2:
+				try {
 				RecherchePopulationDepartementService rechercheDept = new RecherchePopulationDepartementService();
 				rechercheDept.traiter(recensement, scanner);
+				}catch(DepartementServiceException e) {
+					System.err.println(e.getMessage());
+				}
 				break;
 			case 3:
+				try {
 				RecherchePopulationRegionService rechercheRegion = new RecherchePopulationRegionService();
 				rechercheRegion.traiter(recensement, scanner);
+				}catch(RegionServiceException e) {
+					System.err.println(e.getMessage());
+				}
 				break;
 			case 4:
+				try {
 				RecherchePopulationBorneService recherchePopBorne = new RecherchePopulationBorneService();
 				recherchePopBorne.traiter(recensement, scanner);
+				}catch(BorneServiceException e) {
+					System.err.println(e.getMessage());
+				}
 				break;
 			case 5:
 				RechercheVillesPlusPeupleesDepartement rechercheVillesPlusPeupleesDepartement = new RechercheVillesPlusPeupleesDepartement();
